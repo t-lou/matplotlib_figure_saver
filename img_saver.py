@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 import os
+import gzip
 import pickle
 
 import matplotlib.pyplot as pyplot
@@ -26,9 +27,10 @@ def save_all_figures(filename):
         filename (str): The filename for the ouput file.
     """
     # https://stackoverflow.com/questions/3783217/get-the-list-of-figures-in-matplotlib
-    pickle.dump(tuple(manager.canvas.figure
-        for manager in matplotlib._pylab_helpers.Gcf.get_all_fig_managers()),
-        open(complete_extension(filename), 'wb'))
+    with gzip.GzipFile(complete_extension(filename), 'wb') as outfile:
+        pickle.dump(tuple(manager.canvas.figure
+            for manager in matplotlib._pylab_helpers.Gcf.get_all_fig_managers()),
+            outfile)
 
 def save_figure(filename, figure_id):
     """Save specific figure to file.
@@ -36,6 +38,6 @@ def save_figure(filename, figure_id):
     Args:
         filename (str): The filename for the ouput file.
     """
-    pickle.dump(pyplot.figure(figure_id), 
-            open(complete_extension(filename), 'wb'))
+    with gzip.GzipFile(complete_extension(filename), 'wb') as outfile:
+        pickle.dump(pyplot.figure(figure_id), outfile)
 

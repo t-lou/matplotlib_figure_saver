@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import os
+import gzip
 import pickle
 
 from tkinter import Tk
@@ -31,7 +32,8 @@ def show_figure(filename):
     """
     assert os.path.isfile(filename), 'File {} not found.'.format(filename)
 
-    pickle.load(open(filename, 'rb'))
+    with gzip.GzipFile(filename, 'rb') as infile:
+        pickle.load(infile)
     pyplot.show()
 
 def main():
