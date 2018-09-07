@@ -11,6 +11,8 @@ from tkinter.filedialog import askopenfilename
 
 import matplotlib.pyplot as pyplot
 
+g_last_path = os.getenv('HOME')
+
 def find_file():
     """Search for the file to open.
 
@@ -19,10 +21,13 @@ def find_file():
     Returns:
         str: The path to the selected file.
     """
+    global g_last_path
     Tk().withdraw()
-    return askopenfilename(initialdir = os.getenv('HOME'),
+    filename = askopenfilename(initialdir = g_last_path,
             title = 'Select file or click cancel to exit', 
             filetypes = (('pmg files', '*.pmg'), ))
+    g_last_path = os.path.dirname(filename)
+    return filename
 
 def show_figure(filename):
     """Read the figures in file and display.
