@@ -19,9 +19,6 @@ import matplotlib.pyplot as pyplot
 # The directory path where the last figure is.
 g_last_path = os.getenv('HOME')
 
-# The root of GUI.
-g_root = None
-
 def find_file():
     """Search for the file to open.
 
@@ -34,10 +31,9 @@ def find_file():
         str: The path to the selected file.
     """
     global g_last_path
-    global g_root
 
-    if g_root is None:
-        g_root = Tk().withdraw()
+    gui_search = Tk()
+    gui_search.withdraw()
 
     filename = askopenfilename(
             initialdir = g_last_path,
@@ -45,6 +41,8 @@ def find_file():
             filetypes = (('pmg files', '*.pmg'), ))
 
     g_last_path = os.path.dirname(filename)
+
+    gui_search.destroy()
 
     return filename
 
