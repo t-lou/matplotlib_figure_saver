@@ -11,22 +11,36 @@ from tkinter.filedialog import askopenfilename
 
 import matplotlib.pyplot as pyplot
 
+# The directory path where the last figure is.
 g_last_path = os.getenv('HOME')
+
+# The root of GUI.
+g_root = None
 
 def find_file():
     """Search for the file to open.
 
     Only *.pmg is supported. The file should be generated from img_saver.
 
+    This function will initialize g_root if it is not ready, it also saves
+    the drectory path where the last image is read.
+
     Returns:
         str: The path to the selected file.
     """
     global g_last_path
-    Tk().withdraw()
-    filename = askopenfilename(initialdir = g_last_path,
+    global g_root
+
+    if g_root is None:
+        g_root = Tk().withdraw()
+
+    filename = askopenfilename(
+            initialdir = g_last_path,
             title = 'Select file or click cancel to exit', 
             filetypes = (('pmg files', '*.pmg'), ))
+
     g_last_path = os.path.dirname(filename)
+
     return filename
 
 def show_figure(filename):
@@ -39,7 +53,9 @@ def show_figure(filename):
 
     with gzip.GzipFile(filename, 'rb') as infile:
         pickle.load(infile)
+
     pyplot.show()
+    pyplot.close('all')
 
 def main():
     """Select one file and display the figures it contains.
