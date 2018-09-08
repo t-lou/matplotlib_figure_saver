@@ -3,11 +3,16 @@
 from __future__ import print_function
 
 import os
+import sys
 import gzip
 import pickle
 
-from tkinter import Tk
-from tkinter.filedialog import askopenfilename
+if sys.version_info >= (3, 0):
+    from tkinter import Tk
+    from tkinter.filedialog import askopenfilename
+else:
+    from Tkinter import Tk
+    from tkFileDialog import askopenfilename
 
 import matplotlib.pyplot as pyplot
 
@@ -36,7 +41,7 @@ def find_file():
 
     filename = askopenfilename(
             initialdir = g_last_path,
-            title = 'Select file or click cancel to exit', 
+            title = 'Select file or click cancel to exit',
             filetypes = (('pmg files', '*.pmg'), ))
 
     g_last_path = os.path.dirname(filename)
@@ -47,7 +52,7 @@ def show_figure(filename):
     """Read the figures in file and display.
 
     Args:
-        filename (str): The path for the file containing the figures. 
+        filename (str): The path for the file containing the figures.
     """
     assert os.path.isfile(filename), 'File {} not found.'.format(filename)
 
