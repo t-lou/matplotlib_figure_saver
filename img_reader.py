@@ -46,16 +46,33 @@ def find_file():
 
     return filename
 
+def load_figure(filename):
+    """Read the figures in file and return.
+
+    This function is helpful for reusing the plotted data.
+    For one figure, the following functions are helpful for reading the data.
+        pyplot.gca().lines[i].get_xdata()
+        pyplot.gca().lines[i].get_ydata()
+    (https://stackoverflow.com/questions/20130768/retrieve-xy-data-from-matplotlib-figure)
+
+    Args:
+        filename (str): The path for the file containing the figures.
+
+    Return:
+        *: All data available in file.
+    """
+    assert os.path.isfile(filename), 'File {} not found.'.format(filename)
+
+    with gzip.GzipFile(filename, 'rb') as infile:
+        return pickle.load(infile)
+
 def show_figure(filename):
     """Read the figures in file and display.
 
     Args:
         filename (str): The path for the file containing the figures.
     """
-    assert os.path.isfile(filename), 'File {} not found.'.format(filename)
-
-    with gzip.GzipFile(filename, 'rb') as infile:
-        pickle.load(infile)
+    load_figure(filename)
 
     pyplot.show()
     pyplot.close('all')
