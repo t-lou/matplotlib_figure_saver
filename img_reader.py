@@ -11,10 +11,14 @@ if sys.version_info >= (3, 0):
     from tkinter import Tk
     from tkinter.filedialog import askopenfilename
 else:
+    import Tkinter
     from Tkinter import Tk
+    import ttk
     from tkFileDialog import askopenfilename
 
 import matplotlib.pyplot as pyplot
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib.figure import Figure
 
 # The directory path where the last figure is.
 g_last_path = os.getenv('HOME')
@@ -66,15 +70,41 @@ def load_figure(filename):
     with gzip.GzipFile(filename, 'rb') as infile:
         return pickle.load(infile)
 
+def add_canvas(figure, container):
+    """
+    """
+    canvas = FigureCanvasTkAgg(figure, master=container)
+    canvas.draw()
+    canvas.get_tk_widget().pack(side=Tkinter.BOTTOM, fill=Tkinter.BOTH, expand=True)
+
+    toolbar = NavigationToolbar2TkAgg(canvas, container)
+    toolbar.update()
+    canvas._tkcanvas.pack(side=Tkinter.TOP, fill=Tkinter.BOTH, expand=True)
+
 def show_figure(filename):
     """Read the figures in file and display.
 
     Args:
         filename (str): The path for the file containing the figures.
     """
-    load_figure(filename)
+    data = load_figure(filename)
 
-    pyplot.show()
+    gui = Tk()
+    gui.title(os.path.splitext(os.path.basename(filename))[0])
+
+    if isinstance(data, (list, tuple)):
+        notebook = ttk.Notebook(gui)
+        notebook.grid(row=1)
+
+        for index, figure in enumerate(data, 1):
+            page = ttk.Frame(notebook)
+            notebook.add(page, text='figure{}'.format(index))
+            add_canvas(figure, page)
+    else:
+        add_canvas(data, gui)
+
+    Tkinter.mainloop()
+
     pyplot.close('all')
 
 def main():
