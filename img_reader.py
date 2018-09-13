@@ -9,6 +9,7 @@ import pickle
 
 if sys.version_info >= (3, 0):
     import tkinter
+    from tkinter import ttk
     from tkinter.filedialog import askopenfilename
 else:
     import Tkinter as tkinter
