@@ -8,11 +8,10 @@ import gzip
 import pickle
 
 if sys.version_info >= (3, 0):
-    from tkinter import Tk
+    import tkinter
     from tkinter.filedialog import askopenfilename
 else:
-    import Tkinter
-    from Tkinter import Tk
+    import Tkinter as tkinter
     import ttk
     from tkFileDialog import askopenfilename
 
@@ -36,7 +35,7 @@ def find_file():
     """
     global g_last_path
 
-    gui_search = Tk()
+    gui_search = tkinter.Tk()
     gui_search.withdraw()
 
     filename = askopenfilename(
@@ -67,8 +66,12 @@ def load_figure(filename):
     """
     assert os.path.isfile(filename), 'File {} not found.'.format(filename)
 
-    with gzip.GzipFile(filename, 'rb') as infile:
-        return pickle.load(infile)
+    if sys.version_info >= (3, 0):
+        with gzip.GzipFile(filename, 'rb') as infile:
+            return pickle.load(infile, encoding='latin1')
+    else:
+        with gzip.GzipFile(filename, 'rb') as infile:
+            return pickle.load(infile)
 
 def add_canvas(figure, container):
     """Add the figure and toolbar to GUI.
@@ -78,12 +81,15 @@ def add_canvas(figure, container):
         container: The GUI part where the figure is shown.
     """
     canvas = FigureCanvasTkAgg(figure, master=container)
-    canvas.draw()
-    canvas.get_tk_widget().pack(side=Tkinter.BOTTOM, fill=Tkinter.BOTH, expand=True)
+    canvas.show()
+    canvas.get_tk_widget().pack(
+            side=tkinter.TOP,
+            fill=tkinter.BOTH,
+            expand=True)
 
     toolbar = NavigationToolbar2TkAgg(canvas, container)
     toolbar.update()
-    canvas._tkcanvas.pack(side=Tkinter.TOP, fill=Tkinter.BOTH, expand=True)
+    canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=True)
 
     pyplot.close(figure.number)
 
@@ -95,7 +101,7 @@ def show_figure(filename):
     """
     data = load_figure(filename)
 
-    gui = Tk()
+    gui = tkinter.Tk()
     gui.title(os.path.splitext(os.path.basename(filename))[0])
 
     if isinstance(data, (list, tuple)):
@@ -110,8 +116,6 @@ def show_figure(filename):
         add_canvas(data, gui)
 
     gui.mainloop()
-
-    pyplot.close('all')
 
 def main():
     """Select one file and display the figures it contains.

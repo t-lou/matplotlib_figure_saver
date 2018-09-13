@@ -30,7 +30,8 @@ def save_all_figures(filename):
     with gzip.GzipFile(complete_extension(filename), 'wb') as outfile:
         pickle.dump(tuple(manager.canvas.figure
             for manager in matplotlib._pylab_helpers.Gcf.get_all_fig_managers()),
-            outfile)
+            outfile,
+            protocol=2)
 
 def save_figure(filename, figure_id):
     """Save specific figure to file.
@@ -39,5 +40,5 @@ def save_figure(filename, figure_id):
         filename (str): The filename for the ouput file.
     """
     with gzip.GzipFile(complete_extension(filename), 'wb') as outfile:
-        pickle.dump(pyplot.figure(figure_id), outfile)
+        pickle.dump(pyplot.figure(figure_id), outfile, protocol=2)
 
