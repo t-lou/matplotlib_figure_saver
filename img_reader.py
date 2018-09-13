@@ -113,6 +113,8 @@ def show_figure(filename):
             page = ttk.Frame(notebook)
             notebook.add(page, text='figure{}'.format(index))
             add_canvas(figure, page)
+
+        notebook.pack(expand=True, fill=tkinter.BOTH)
     else:
         add_canvas(data, gui)
 
