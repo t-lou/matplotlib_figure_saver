@@ -71,7 +71,11 @@ def load_figure(filename):
         return pickle.load(infile)
 
 def add_canvas(figure, container):
-    """
+    """Add the figure and toolbar to GUI.
+
+    Args:
+        figure (matplotlib.Figure): The figure object to visualize.
+        container: The GUI part where the figure is shown.
     """
     canvas = FigureCanvasTkAgg(figure, master=container)
     canvas.draw()
@@ -80,6 +84,8 @@ def add_canvas(figure, container):
     toolbar = NavigationToolbar2TkAgg(canvas, container)
     toolbar.update()
     canvas._tkcanvas.pack(side=Tkinter.TOP, fill=Tkinter.BOTH, expand=True)
+
+    pyplot.close(figure.number)
 
 def show_figure(filename):
     """Read the figures in file and display.
@@ -103,7 +109,7 @@ def show_figure(filename):
     else:
         add_canvas(data, gui)
 
-    Tkinter.mainloop()
+    gui.mainloop()
 
     pyplot.close('all')
 
