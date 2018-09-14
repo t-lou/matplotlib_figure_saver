@@ -7,6 +7,9 @@ import sys
 import gzip
 import pickle
 
+import matplotlib.pyplot as pyplot
+import matplotlib.backends.backend_tkagg as tk_backend
+
 if sys.version_info >= (3, 0):
     import tkinter
     from tkinter import ttk
@@ -15,10 +18,6 @@ else:
     import Tkinter as tkinter
     import ttk
     from tkFileDialog import askopenfilename
-
-import matplotlib.pyplot as pyplot
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-from matplotlib.figure import Figure
 
 # The directory path where the last figure is.
 g_last_path = os.getenv('HOME')
@@ -67,11 +66,10 @@ def load_figure(filename):
     """
     assert os.path.isfile(filename), 'File {} not found.'.format(filename)
 
-    if sys.version_info >= (3, 0):
-        with gzip.GzipFile(filename, 'rb') as infile:
+    with gzip.GzipFile(filename, 'rb') as infile:
+        if sys.version_info >= (3, 0):
             return pickle.load(infile, encoding='latin1')
-    else:
-        with gzip.GzipFile(filename, 'rb') as infile:
+        else:
             return pickle.load(infile)
 
 def add_canvas(figure, container):
@@ -81,14 +79,16 @@ def add_canvas(figure, container):
         figure (matplotlib.Figure): The figure object to visualize.
         container: The GUI part where the figure is shown.
     """
-    canvas = FigureCanvasTkAgg(figure, master=container)
-    canvas.show()
+    canvas = tk_backend.FigureCanvasTkAgg(figure, master=container)
+    canvas.draw()
     canvas.get_tk_widget().pack(
             side=tkinter.TOP,
             fill=tkinter.BOTH,
             expand=True)
 
-    toolbar = NavigationToolbar2TkAgg(canvas, container)
+    toolbar = tk_backend.NavigationToolbar2Tk(canvas, container) \
+            if hasattr(tk_backend, 'NavigationToolbar2Tk') \
+            else tk_backend.NavigationToolbar2TkAgg(canvas, container)
     toolbar.update()
     canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=True)
 
