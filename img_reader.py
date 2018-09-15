@@ -43,9 +43,12 @@ def find_file():
             title = 'Select file or click cancel to exit',
             filetypes = (('pmg files', '*.pmg'), ))
 
-    g_last_path = os.path.dirname(filename)
-
     gui_search.destroy()
+
+    if not filename:
+        sys.exit()
+
+    g_last_path = os.path.dirname(filename)
 
     return filename
 
@@ -86,6 +89,8 @@ def add_canvas(figure, container):
             fill=tkinter.BOTH,
             expand=True)
 
+    # NavigationToolbar2TkAgg is deprecated since matplotlib 2.2,
+    # NavigationToolbar2Tk should be used and is only available in new version.
     toolbar = tk_backend.NavigationToolbar2Tk(canvas, container) \
             if hasattr(tk_backend, 'NavigationToolbar2Tk') \
             else tk_backend.NavigationToolbar2TkAgg(canvas, container)
