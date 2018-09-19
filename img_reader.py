@@ -75,6 +75,45 @@ def load_figure(filename):
         else:
             return pickle.load(infile)
 
+def start_text_box():
+    """Open a text box for execute Python code (not yet influence the plots).
+    """
+    def do(string):
+        """
+        Alias for exec (which brings SyntaxError).
+        """
+        exec(string)
+
+    text_box = tkinter.Tk()
+    text_box.title('Command')
+
+    tkinter.Label(
+            text_box,
+            text='Add Python script here').pack(
+                    side=tkinter.TOP,
+                    fill=tkinter.BOTH,
+                    expand=tkinter.YES)
+
+    txt = tkinter.Text(text_box, width=120, height=40)
+    txt.focus()
+    txt.pack(side=tkinter.LEFT, fill=tkinter.X, expand=tkinter.YES)
+    tkinter.Button(
+            text_box,
+            text='Execute',
+            command=(lambda: do(txt.get('1.0', tkinter.END).strip()))).pack(
+                    side=tkinter.BOTTOM,
+                    expand=tkinter.YES,
+                    fill=tkinter.BOTH)
+
+def add_panel(gui):
+    """Add control panel to GUI (not only execute Python code).
+
+    Args:
+        gui: Where the panel should be (should be element of tkinter).
+    """
+    button_script = tkinter.Button(gui, text='Command', command=start_text_box)
+    button_script.pack(side=tkinter.TOP)
+
 def add_canvas(figure, container):
     """Add the figure and toolbar to GUI.
 
@@ -117,10 +156,12 @@ def show_figure(filename):
         for index, figure in enumerate(data, 1):
             page = ttk.Frame(notebook)
             notebook.add(page, text='figure{}'.format(index))
+            add_panel(page)
             add_canvas(figure, page)
 
         notebook.pack(expand=True, fill=tkinter.BOTH)
     else:
+        add_panel(gui)
         add_canvas(data, gui)
 
     gui.mainloop()
@@ -133,4 +174,5 @@ def main():
 if __name__ == '__main__':
     while True:
         main()
+        break
 
