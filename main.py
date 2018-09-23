@@ -15,6 +15,9 @@ else:
     from tkFileDialog import askopenfilename
 
 import img_reader
+import FigureManager
+
+g_figure_manager = FigureManager.FigureManager()
 
 # The size of the button (width, height) for buttons in root gui.
 SIZE_BUTTON = (18, 4)
@@ -42,30 +45,26 @@ def main():
     root = tkinter.Tk()
     root.title('Hello World!')
 
-    button_load_script = tkinter.Button(
+    tkinter.Button(
             root,
             text='Script',
             height=SIZE_BUTTON[1],
             width=SIZE_BUTTON[0],
-            command=load_python_script)
-    button_load_script.pack(side=tkinter.TOP)
+            command=load_python_script).pack(side=tkinter.TOP)
 
-    button_load_image = tkinter.Button(
+    tkinter.Button(
             root,
             text='Image',
             height=SIZE_BUTTON[1],
             width=SIZE_BUTTON[0],
-            command=img_reader.main)
-    button_load_image.pack(side=tkinter.TOP)
+            command=img_reader.main).pack(side=tkinter.TOP)
 
-    button_command_box = tkinter.Button(
+    tkinter.Button(
             root,
             text='Command',
             height=SIZE_BUTTON[1],
             width=SIZE_BUTTON[0],
-            command=img_reader.start_text_box)
-    button_command_box.pack(side=tkinter.TOP)
-
+            command=img_reader.start_text_box).pack(side=tkinter.TOP)
 
     root.mainloop()
 

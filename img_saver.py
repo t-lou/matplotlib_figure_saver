@@ -5,7 +5,7 @@ import gzip
 import pickle
 
 import matplotlib.pyplot as pyplot
-import matplotlib._pylab_helpers
+import matplotlib._pylab_helpers as pylab_helpers
 
 def complete_extension(filename):
     """Add or replace the extension to .pmg.
@@ -29,7 +29,7 @@ def save_all_figures(filename):
     # https://stackoverflow.com/questions/3783217/get-the-list-of-figures-in-matplotlib
     with gzip.GzipFile(complete_extension(filename), 'wb') as outfile:
         pickle.dump(tuple(manager.canvas.figure
-            for manager in matplotlib._pylab_helpers.Gcf.get_all_fig_managers()),
+            for manager in pylab_helpers.Gcf.get_all_fig_managers()),
             outfile,
             protocol=2)
 
