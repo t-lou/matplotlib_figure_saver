@@ -3,9 +3,11 @@ from __future__ import print_function
 import matplotlib.pyplot as pyplot
 import matplotlib._pylab_helpers as pylab_helpers
 
+
 class FigureManager(object):
     """The manager to store and matplotlib figures.
     """
+
     def __init__(self):
         """Initialize the figure list.
         """
@@ -43,4 +45,3 @@ class FigureManager(object):
                     index,
                     len(self._figures))
         return self._figures[index]
-

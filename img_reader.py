@@ -22,6 +22,7 @@ else:
 # The directory path where the last figure is.
 g_last_path = os.getenv('HOME')
 
+
 def find_file():
     """Search for the file to open.
 
@@ -39,9 +40,9 @@ def find_file():
     gui_search.withdraw()
 
     filename = askopenfilename(
-            initialdir = g_last_path,
-            title = 'Select file or click cancel to exit',
-            filetypes = (('pmg files', '*.pmg'), ))
+        initialdir=g_last_path,
+        title='Select file or click cancel to exit',
+        filetypes=(('pmg files', '*.pmg'), ))
 
     gui_search.destroy()
 
@@ -51,6 +52,7 @@ def find_file():
     g_last_path = os.path.dirname(filename)
 
     return filename
+
 
 def load_figure(filename):
     """Read the figures in file and return.
@@ -75,35 +77,33 @@ def load_figure(filename):
         else:
             return pickle.load(infile)
 
+
 def start_text_box():
     """Open a text box for execute Python code (not yet influence the plots).
     """
+
     def do(string):
         """
         Alias for exec (which brings SyntaxError).
         """
-        exec(string)
+        exec (string)
 
     text_box = tkinter.Tk()
     text_box.title('Command')
 
     tkinter.Label(
-            text_box,
-            text='Add Python script here').pack(
-                    side=tkinter.TOP,
-                    fill=tkinter.BOTH,
-                    expand=tkinter.YES)
+        text_box, text='Add Python script here').pack(
+            side=tkinter.TOP, fill=tkinter.BOTH, expand=tkinter.YES)
 
     txt = tkinter.Text(text_box, width=120, height=40)
     txt.focus()
     txt.pack(side=tkinter.LEFT, fill=tkinter.X, expand=tkinter.YES)
     tkinter.Button(
-            text_box,
-            text='Execute',
-            command=(lambda: do(txt.get('1.0', tkinter.END).strip()))).pack(
-                    side=tkinter.BOTTOM,
-                    expand=tkinter.YES,
-                    fill=tkinter.BOTH)
+        text_box,
+        text='Execute',
+        command=(lambda: do(txt.get('1.0', tkinter.END).strip()))).pack(
+            side=tkinter.BOTTOM, expand=tkinter.YES, fill=tkinter.BOTH)
+
 
 def add_panel(gui):
     """Add control panel to GUI (not only execute Python code).
@@ -113,6 +113,7 @@ def add_panel(gui):
     """
     button_script = tkinter.Button(gui, text='Command', command=start_text_box)
     button_script.pack(side=tkinter.TOP)
+
 
 def add_canvas(figure, container):
     """Add the figure and toolbar to GUI.
@@ -124,9 +125,7 @@ def add_canvas(figure, container):
     canvas = tk_backend.FigureCanvasTkAgg(figure, master=container)
     canvas.draw()
     canvas.get_tk_widget().pack(
-            side=tkinter.TOP,
-            fill=tkinter.BOTH,
-            expand=True)
+        side=tkinter.TOP, fill=tkinter.BOTH, expand=True)
 
     # NavigationToolbar2TkAgg is deprecated since matplotlib 2.2,
     # NavigationToolbar2Tk should be used and is only available in new version.
@@ -137,6 +136,7 @@ def add_canvas(figure, container):
     canvas._tkcanvas.pack(side=tkinter.TOP, fill=tkinter.BOTH, expand=True)
 
     pyplot.close(figure.number)
+
 
 def show_figure(filename):
     """Read the figures in file and display.
@@ -166,13 +166,14 @@ def show_figure(filename):
 
     gui.mainloop()
 
+
 def main():
     """Select one file and display the figures it contains.
     """
     show_figure(find_file())
 
+
 if __name__ == '__main__':
     while True:
         main()
         break
-

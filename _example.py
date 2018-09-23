@@ -32,4 +32,3 @@ print('Please open both.pmg.')
 img_reader.main()
 print('Please open second.pmg.')
 img_reader.main()
-
