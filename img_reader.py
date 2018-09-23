@@ -4,11 +4,11 @@ from __future__ import print_function
 
 import os
 import sys
-import gzip
-import pickle
 
 import matplotlib.pyplot as pyplot
 import matplotlib.backends.backend_tkagg as tk_backend
+
+from FigureManager import FigureManager
 
 if sys.version_info >= (3, 0):
     import tkinter
@@ -52,30 +52,6 @@ def find_file():
     g_last_path = os.path.dirname(filename)
 
     return filename
-
-
-def load_figure(filename):
-    """Read the figures in file and return.
-
-    This function is helpful for reusing the plotted data.
-    For one figure, the following functions are helpful for reading the data.
-        pyplot.gca().lines[i].get_xdata()
-        pyplot.gca().lines[i].get_ydata()
-    (https://stackoverflow.com/questions/20130768/retrieve-xy-data-from-matplotlib-figure)
-
-    Args:
-        filename (str): The path for the file containing the figures.
-
-    Return:
-        *: All data available in file.
-    """
-    assert os.path.isfile(filename), 'File {} not found.'.format(filename)
-
-    with gzip.GzipFile(filename, 'rb') as infile:
-        if sys.version_info >= (3, 0):
-            return pickle.load(infile, encoding='latin1')
-        else:
-            return pickle.load(infile)
 
 
 def start_text_box():
@@ -144,7 +120,7 @@ def show_figure(filename):
     Args:
         filename (str): The path for the file containing the figures.
     """
-    data = load_figure(filename)
+    data = FigureManager.load_pmg(filename)
 
     gui = tkinter.Tk()
     gui.title(os.path.splitext(os.path.basename(filename))[0])
@@ -176,4 +152,3 @@ def main():
 if __name__ == '__main__':
     while True:
         main()
-        break

@@ -15,9 +15,9 @@ else:
     from tkFileDialog import askopenfilename
 
 import img_reader
-import FigureManager
+from FigureManager import FigureManager
 
-g_figure_manager = FigureManager.FigureManager()
+g_figure_manager = FigureManager()
 
 # The size of the button (width, height) for buttons in root gui.
 SIZE_BUTTON = (18, 4)
