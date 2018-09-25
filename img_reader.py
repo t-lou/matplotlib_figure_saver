@@ -42,7 +42,7 @@ def find_file():
     filename = askopenfilename(
         initialdir=g_last_path,
         title='Select file or click cancel to exit',
-        filetypes=(('pmg files', '*.pmg'), ))
+        filetypes=(('pmg files', '*.pmg'),))
 
     gui_search.destroy()
 
@@ -62,6 +62,9 @@ def start_text_box():
         """
         Alias for exec (which brings SyntaxError).
         """
+        add_all_figures = g_figure_manager.add_all_figures
+        add_figure = g_figure_manager.add_figure
+        save_all_figures = FigureManager.save_all_figures
         exec(string)
 
     text_box = tkinter.Tk()

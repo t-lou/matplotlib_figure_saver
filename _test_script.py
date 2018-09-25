@@ -12,13 +12,8 @@ pyplot.figure(100)
 pyplot.plot(x, numpy.sinc(x))
 pyplot.title('sinc')
 
-g_figure_manager.add_all_figures()
-
 pyplot.figure(2)
 pyplot.plot(x, numpy.log(x + 1e-9))
 pyplot.title('log')
 
-g_figure_manager.add_figure(2)
-
-# pyplot.show()
-pyplot.close('all')
+save_all_figures()

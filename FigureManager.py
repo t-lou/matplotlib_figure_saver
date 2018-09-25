@@ -21,7 +21,10 @@ class FigureManager(object):
     def add_all_figures(self):
         """Add all pyplot.figure available.
         """
-        self._figures += pylab_helpers.Gcf.get_all_fig_managers()
+        self._figures += [
+            manager.canvas.figure
+            for manager in pylab_helpers.Gcf.get_all_fig_managers()
+        ]
 
     def add_figure(self, target):
         """Add specified figure.
@@ -47,6 +50,14 @@ class FigureManager(object):
             data = [data]
         self._figures += data
 
+    def get_figures(self):
+        """Return all figures.
+
+        Return:
+            List of figures.
+        """
+        return self._figures
+
     def get_figure(self, index):
         """Get the figure with index.
 
@@ -56,11 +67,31 @@ class FigureManager(object):
         Return:
             matplotlib.pyplot.Figure: The expected figure object.
         """
-        assert index < len(self._figures), \
+        assert -len(self._figures) <= index < len(self._figures), \
             'Asked figure {} but only {} images are available.'.format(
                     index,
                     len(self._figures))
         return self._figures[index]
+
+    def remove_figure(self, index):
+        """Delete figure with index.
+
+        Args:
+            index (int): Index of figure to delete.
+        """
+        assert -len(self._figures) <= index < len(self._figures), \
+            'Asked figure {} but only {} images are available.'.format(
+                    index,
+                    len(self._figures))
+        del self._figures[index]
+
+    def save_pmg(self, filename='images'):
+        """Save all figures in pmg file with given name.
+
+        Args:
+            filename (str): The filename to save.
+        """
+        FigureManager.save_all_figures(self._figures, filename)
 
     @staticmethod
     def load_pmg(filename):
@@ -99,11 +130,16 @@ class FigureManager(object):
         return os.path.splitext(filename)[0] + extension
 
     @staticmethod
-    def save_all_figures(filename):
+    def save_all_figures(filename='figures', figures=None):
         """Save all figures available to file.
         Args:
             filename (str): The filename for the ouput file.
         """
+        if figures is None:
+            fm = FigureManager()
+            fm.add_all_figures()
+            figures = fm.get_figures()
+
         # https://stackoverflow.com/questions/3783217/get-the-list-of-figures-in-matplotlib
         with gzip.GzipFile(FigureManager.complete_extension(filename),
                            'wb') as outfile:

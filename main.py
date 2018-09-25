@@ -31,13 +31,16 @@ def load_python_script():
 
     filename = askopenfilename(
         initialdir=img_reader.g_last_path,
-        filetypes=(('python files', '*.py'), ))
+        filetypes=(('python files', '*.py'),))
 
     gui_search.destroy()
 
     if filename:
         img_reader.g_last_path = os.path.dirname(filename)
         with open(filename, 'r') as infile:
+            add_all_figures = g_figure_manager.add_all_figures
+            add_figure = g_figure_manager.add_figure
+            save_all_figures = FigureManager.save_all_figures
             exec(infile.read())
 
 
