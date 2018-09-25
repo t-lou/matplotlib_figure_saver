@@ -62,7 +62,7 @@ def start_text_box():
         """
         Alias for exec (which brings SyntaxError).
         """
-        exec (string)
+        exec(string)
 
     text_box = tkinter.Tk()
     text_box.title('Command')
@@ -74,6 +74,17 @@ def start_text_box():
     txt = tkinter.Text(text_box, width=120, height=40)
     txt.focus()
     txt.pack(side=tkinter.LEFT, fill=tkinter.X, expand=tkinter.YES)
+
+    scrollbar = tkinter.Scrollbar(text_box)
+    scrollbar.pack(side=tkinter.LEFT, fill=tkinter.Y, expand=tkinter.YES)
+    scrollbar.config(command=txt.yview)
+    txt.config(yscrollcommand=scrollbar.set)
+
+    txt.insert(tkinter.END, 'import matplotlib.pyplot as plt\n')
+    txt.insert(tkinter.END, 'import numpy as np\n')
+    txt.insert(tkinter.END, '# call g_figure_manager.add_all_figures() ')
+    txt.insert(tkinter.END, 'to save all figures\n\n')
+
     tkinter.Button(
         text_box,
         text='Execute',

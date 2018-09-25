@@ -105,7 +105,8 @@ class FigureManager(object):
             filename (str): The filename for the ouput file.
         """
         # https://stackoverflow.com/questions/3783217/get-the-list-of-figures-in-matplotlib
-        with gzip.GzipFile(FigureManager.complete_extension(filename), 'wb') as outfile:
+        with gzip.GzipFile(FigureManager.complete_extension(filename),
+                           'wb') as outfile:
             pickle.dump(
                 tuple(manager.canvas.figure
                       for manager in pylab_helpers.Gcf.get_all_fig_managers()),
@@ -118,6 +119,6 @@ class FigureManager(object):
         Args:
             filename (str): The filename for the ouput file.
         """
-        with gzip.GzipFile(FigureManager.complete_extension(filename), 'wb') as outfile:
+        with gzip.GzipFile(FigureManager.complete_extension(filename),
+                           'wb') as outfile:
             pickle.dump(pyplot.figure(figure_id), outfile, protocol=2)
-

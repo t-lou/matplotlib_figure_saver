@@ -38,7 +38,7 @@ def load_python_script():
     if filename:
         img_reader.g_last_path = os.path.dirname(filename)
         with open(filename, 'r') as infile:
-            exec (infile.read())
+            exec(infile.read())
 
 
 def main():
