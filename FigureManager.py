@@ -8,6 +8,8 @@ import pickle
 import matplotlib.pyplot as pyplot
 import matplotlib._pylab_helpers as pylab_helpers
 
+import interaction
+
 
 class FigureManager(object):
     """The manager to store and matplotlib figures.
@@ -45,7 +47,7 @@ class FigureManager(object):
         Args:
             filename (str): The filename to read.
         """
-        data = load_pmg(filename)
+        data = interaction.load_pmg(filename)
         if isinstance(data, pyplot.Figure):
             data = [data]
         self._figures += data
@@ -158,3 +160,7 @@ class FigureManager(object):
         with gzip.GzipFile(FigureManager.complete_extension(filename),
                            'wb') as outfile:
             pickle.dump(pyplot.figure(figure_id), outfile, protocol=2)
+
+
+# Default instance for the main application.
+g_figure_manager = FigureManager()

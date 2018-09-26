@@ -3,7 +3,6 @@
 from __future__ import print_function
 
 import sys
-import os
 
 if sys.version_info >= (3, 0):
     import tkinter
@@ -14,34 +13,11 @@ else:
     import ttk
     from tkFileDialog import askopenfilename
 
+import interaction
 import img_reader
-from FigureManager import FigureManager
-
-g_figure_manager = FigureManager()
 
 # The size of the button (width, height) for buttons in root gui.
 SIZE_BUTTON = (18, 4)
-
-
-def load_python_script():
-    """Find Python script and execute.
-    """
-    gui_search = tkinter.Tk()
-    gui_search.withdraw()
-
-    filename = askopenfilename(
-        initialdir=img_reader.g_last_path,
-        filetypes=(('python files', '*.py'),))
-
-    gui_search.destroy()
-
-    if filename:
-        img_reader.g_last_path = os.path.dirname(filename)
-        with open(filename, 'r') as infile:
-            add_all_figures = g_figure_manager.add_all_figures
-            add_figure = g_figure_manager.add_figure
-            save_all_figures = FigureManager.save_all_figures
-            exec(infile.read())
 
 
 def main():
@@ -55,7 +31,7 @@ def main():
         text='Script',
         height=SIZE_BUTTON[1],
         width=SIZE_BUTTON[0],
-        command=load_python_script).pack(side=tkinter.TOP)
+        command=interaction.load_python_script).pack(side=tkinter.TOP)
 
     tkinter.Button(
         root,
@@ -69,7 +45,7 @@ def main():
         text='Command',
         height=SIZE_BUTTON[1],
         width=SIZE_BUTTON[0],
-        command=img_reader.start_text_box).pack(side=tkinter.TOP)
+        command=interaction.start_text_box).pack(side=tkinter.TOP)
 
     root.mainloop()
 
