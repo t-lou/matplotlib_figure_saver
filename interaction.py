@@ -7,12 +7,15 @@ if sys.version_info >= (3, 0):
     import tkinter
     from tkinter import ttk
     from tkinter.filedialog import askopenfilename
+    from imp import reload
 else:
     import Tkinter as tkinter
     import ttk
     from tkFileDialog import askopenfilename
 
 import FigureManager
+import testfield
+import testfield_source
 
 # The directory path where the last figure is.
 g_last_path = os.getenv('HOME')
@@ -34,10 +37,8 @@ def load_python_script():
     if filename:
         g_last_path = os.path.dirname(filename)
         with open(filename, 'r') as infile:
-            add_all_figures = FigureManager.g_figure_manager.add_all_figures
-            add_figure = FigureManager.g_figure_manager.add_figure
-            save_all_figures = FigureManager.FigureManager.save_all_figures
-            exec(infile.read())
+            testfield_source.content = infile.read()
+            reload(testfield)
 
 
 def find_file():
@@ -77,10 +78,8 @@ def start_text_box():
         """
         Alias for exec (which brings SyntaxError).
         """
-        add_all_figures = FigureManager.g_figure_manager.add_all_figures
-        add_figure = FigureManager.g_figure_manager.add_figure
-        save_all_figures = FigureManager.FigureManager.save_all_figures
-        exec(string)
+        testfield_source.content = string
+        reload(testfield)
 
     text_box = tkinter.Tk()
     text_box.title('Command')
@@ -100,8 +99,6 @@ def start_text_box():
 
     txt.insert(tkinter.END, 'import matplotlib.pyplot as plt\n')
     txt.insert(tkinter.END, 'import numpy as np\n')
-    txt.insert(tkinter.END, '# call g_figure_manager.add_all_figures() ')
-    txt.insert(tkinter.END, 'to save all figures\n\n')
 
     tkinter.Button(
         text_box,
