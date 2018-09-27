@@ -51,31 +51,51 @@ def add_canvas(figure, container):
     pyplot.close(figure.number)
 
 
-def show_figure(filename):
+def show_figure_from_file(filename):
     """Read the figures in file and display.
 
     Args:
-        filename (str): The path for the file containing the figures.
+        filename (str): The path where the pmg file is.
     """
-    if filename:
-        data = FigureManager.FigureManager.load_pmg(filename)
+    assert os.path.isfile(filename) and os.path.splitext(filename)[1] == '.pmg'
+    data = FigureManager.FigureManager.load_pmg(filename)
+    if data:
+        show_figure(data, title=os.path.splitext(os.path.basename(filename))[0])
 
-        gui = tkinter.Tk()
-        gui.title(os.path.splitext(os.path.basename(filename))[0])
 
-        if isinstance(data, (list, tuple)):
-            notebook = ttk.Notebook(gui)
-            notebook.grid(row=1)
+def show_figure_from_manager(figure_manager):
+    """Display the figures from a FigureManager.
 
-            for index, figure in enumerate(data, 1):
-                page = ttk.Frame(notebook)
-                notebook.add(page, text='figure{}'.format(index))
-                add_panel(page)
-                add_canvas(figure, page)
+    Args:
+        figure_manager (FigureManager): The FigureManager with figures.
+    """
+    show_figure(figure_manager.get_figures())
 
-            notebook.pack(expand=True, fill=tkinter.BOTH)
-        else:
-            add_panel(gui)
-            add_canvas(data, gui)
 
-        gui.mainloop()
+def show_figure(data, title=None):
+    """Display the figures.
+
+    Args:
+        data (Figure or list[Figure]): The data from pmg file or FigureManager.
+        title (str): The tile for the window.
+    """
+    gui = tkinter.Tk()
+    if title:
+        gui.title(title)
+
+    if isinstance(data, (list, tuple)):
+        notebook = ttk.Notebook(gui)
+        notebook.grid(row=1)
+
+        for index, figure in enumerate(data, 1):
+            page = ttk.Frame(notebook)
+            notebook.add(page, text='figure{}'.format(index))
+            add_panel(page)
+            add_canvas(figure, page)
+
+        notebook.pack(expand=True, fill=tkinter.BOTH)
+    else:
+        add_panel(gui)
+        add_canvas(data, gui)
+
+    gui.mainloop()

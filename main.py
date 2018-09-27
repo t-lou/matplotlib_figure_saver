@@ -11,6 +11,7 @@ else:
 
 import interaction
 import canvas
+import FigureManager
 
 # The size of the button (width, height) for buttons in root gui.
 SIZE_BUTTON = (18, 4)
@@ -19,7 +20,10 @@ SIZE_BUTTON = (18, 4)
 def find_show_image():
     """Search, open and show an pmg image.
     """
-    canvas.show_figure(interaction.find_pmg())
+    filename = interaction.find_pmg()
+    if filename:
+        FigureManager.g_figure_manager.add_pmg(filename)
+        canvas.show_figure_from_manager(FigureManager.g_figure_manager)
 
 
 def main():

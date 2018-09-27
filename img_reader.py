@@ -9,6 +9,6 @@ if __name__ == '__main__':
     while True:
         filename = interaction.find_pmg()
         if filename:
-            canvas.show_figure(filename)
+            canvas.show_figure_from_file(filename)
         else:
             break

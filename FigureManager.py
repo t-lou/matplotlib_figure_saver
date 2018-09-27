@@ -47,7 +47,7 @@ class FigureManager(object):
         Args:
             filename (str): The filename to read.
         """
-        data = interaction.load_pmg(filename)
+        data = FigureManager.load_pmg(filename)
         if isinstance(data, pyplot.Figure):
             data = [data]
         self._figures += data
@@ -56,9 +56,12 @@ class FigureManager(object):
         """Return all figures.
 
         Return:
-            List of figures.
+            The only figure or List of figures.
         """
-        return self._figures
+        if len(self._figures) == 1:
+            return self._figures[0]
+        else:
+            return self._figures
 
     def get_figure(self, index):
         """Get the figure with index.
@@ -86,6 +89,12 @@ class FigureManager(object):
                     index,
                     len(self._figures))
         del self._figures[index]
+
+    def clean_figures(self):
+        """Remove all figures.
+        """
+        del self._figures
+        self._figures = []
 
     def save_pmg(self, filename='images'):
         """Save all figures in pmg file with given name.
