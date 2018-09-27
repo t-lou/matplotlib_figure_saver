@@ -5,15 +5,12 @@ import os
 
 if sys.version_info >= (3, 0):
     import tkinter
-    from tkinter import ttk
     from tkinter.filedialog import askopenfilename
     from imp import reload
 else:
     import Tkinter as tkinter
-    import ttk
     from tkFileDialog import askopenfilename
 
-import FigureManager
 import testfield
 import testfield_source
 
@@ -21,28 +18,47 @@ import testfield_source
 g_last_path = os.getenv('HOME')
 
 
-def load_python_script():
-    """Find Python script and execute.
+def find_file(filetypes):
+    """Find file with given types and return the filename.
+    
+    If one file is selected, the logged last path will be changed to the
+    directory where the file lies.
+    
+    Args:
+        filetypes (list(list(str, str))): Texts and patterns to restrict the
+            file types.
+        
+    Return:
+        str: The path for selected file.
     """
     global g_last_path
 
     gui_search = tkinter.Tk()
     gui_search.withdraw()
 
-    filename = askopenfilename(
-        initialdir=g_last_path, filetypes=(('python files', '*.py'),))
+    filename = askopenfilename(initialdir=g_last_path, filetypes=filetypes)
 
     gui_search.destroy()
 
     if filename:
         g_last_path = os.path.dirname(filename)
+
+    return filename
+
+
+def load_python_script():
+    """Find Python script and execute.
+    """
+    filename = find_file((('Python files', '*.py'),))
+
+    if filename:
         with open(filename, 'r') as infile:
             testfield_source.content = infile.read()
             reload(testfield)
 
 
-def find_file():
-    """Search for the file to open.
+def find_pmg():
+    """Search for the pmg image to open.
 
     Only *.pmg is supported. The file should be generated from img_saver.
 
@@ -52,22 +68,7 @@ def find_file():
     Returns:
         str: The path to the selected file.
     """
-    global g_last_path
-
-    gui_search = tkinter.Tk()
-    gui_search.withdraw()
-
-    filename = askopenfilename(
-        initialdir=g_last_path,
-        title='Select file or click cancel to exit',
-        filetypes=(('pmg files', '*.pmg'),))
-
-    gui_search.destroy()
-
-    if filename:
-        g_last_path = os.path.dirname(filename)
-
-    return filename
+    return find_file((('pmg files', '*.pmg'),))
 
 
 def start_text_box():

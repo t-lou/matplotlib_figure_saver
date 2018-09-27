@@ -6,18 +6,20 @@ import sys
 
 if sys.version_info >= (3, 0):
     import tkinter
-    from tkinter import ttk
-    from tkinter.filedialog import askopenfilename
 else:
     import Tkinter as tkinter
-    import ttk
-    from tkFileDialog import askopenfilename
 
 import interaction
-import img_reader
+import canvas
 
 # The size of the button (width, height) for buttons in root gui.
 SIZE_BUTTON = (18, 4)
+
+
+def find_show_image():
+    """Search, open and show an pmg image.
+    """
+    canvas.show_figure(interaction.find_pmg())
 
 
 def main():
@@ -38,7 +40,7 @@ def main():
         text='Image',
         height=SIZE_BUTTON[1],
         width=SIZE_BUTTON[0],
-        command=img_reader.main).pack(side=tkinter.TOP)
+        command=find_show_image).pack(side=tkinter.TOP)
 
     tkinter.Button(
         root,

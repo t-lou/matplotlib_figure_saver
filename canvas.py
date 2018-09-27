@@ -9,13 +9,11 @@ import matplotlib.backends.backend_tkagg as tk_backend
 if sys.version_info >= (3, 0):
     import tkinter
     from tkinter import ttk
-    from tkinter.filedialog import askopenfilename
 else:
     import Tkinter as tkinter
     import ttk
-    from tkFileDialog import askopenfilename
 
-from FigureManager import FigureManager
+import FigureManager
 import interaction
 
 
@@ -60,7 +58,7 @@ def show_figure(filename):
         filename (str): The path for the file containing the figures.
     """
     if filename:
-        data = FigureManager.load_pmg(filename)
+        data = FigureManager.FigureManager.load_pmg(filename)
 
         gui = tkinter.Tk()
         gui.title(os.path.splitext(os.path.basename(filename))[0])

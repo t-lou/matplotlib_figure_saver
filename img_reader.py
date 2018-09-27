@@ -2,17 +2,13 @@
 
 from __future__ import print_function
 
-from FigureManager import FigureManager
-import canvas
 import interaction
-
-
-def main():
-    """Select one file and display the figures it contains.
-    """
-    canvas.show_figure(interaction.find_file())
-
+import canvas
 
 if __name__ == '__main__':
     while True:
-        main()
+        filename = interaction.find_pmg()
+        if filename:
+            canvas.show_figure(filename)
+        else:
+            break

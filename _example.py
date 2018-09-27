@@ -26,9 +26,4 @@ pyplot.close(1)
 pyplot.close(100)
 
 # read the files
-print('Please open first.pmg.')
-img_reader.main()
-print('Please open both.pmg.')
-img_reader.main()
-print('Please open second.pmg.')
-img_reader.main()
+print('Please execute img_reader.py with Python and open the pmg files.')
