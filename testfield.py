@@ -1,5 +1,9 @@
 from __future__ import print_function
 
+import os
+import tempfile
+import datetime
+
 import FigureManager
 import canvas
 import testfield_source
@@ -16,4 +20,10 @@ def update_figures():
 
 # Execute the string (from script or command line).
 if testfield_source.content is not None:
+    with open(os.path.join(tempfile.gettempdir(), 'pytena_history'),
+              'a') as log:
+        separator = '#' * 26 + ' ' + str(
+            datetime.datetime.now()) + ' ' + '#' * 26
+        log.writelines('\n'.join([separator, testfield_source.content, '\n']))
+
     exec(testfield_source.content)
