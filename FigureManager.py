@@ -20,20 +20,26 @@ class FigureManager(object):
 
     def add_all_figures(self):
         """Add all pyplot.figure available.
+
+        This function will close all figures, otherwise the program may block.
         """
         self._figures += [
             manager.canvas.figure
             for manager in pylab_helpers.Gcf.get_all_fig_managers()
         ]
+        pyplot.close('all')
 
     def add_figure(self, target):
         """Add specified figure.
+
+        If one index is given, the figure will be closed. Otherwise the program may block.
 
         Args:
             target (int or matplotlib.pyplot.Figure): Figure index of figure.
         """
         if isinstance(target, int):
             self._figures.append(pyplot.figure(target))
+            pyplot.close(target)
         elif isinstance(target, pyplot.Figure):
             self._figures.append(target)
         else:

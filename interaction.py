@@ -106,10 +106,11 @@ def start_text_box():
         text='Execute',
         command=(lambda: do(txt.get('1.0', tkinter.END).strip()))).pack(
             side=tkinter.BOTTOM, expand=tkinter.YES, fill=tkinter.BOTH)
-    
+
+
 def show_help_box():
     label_box = tkinter.Tk()
-    
+
     text = '''Helpful commands:
         
     add_all_figures():
@@ -123,6 +124,13 @@ def show_help_box():
     update_figures():
         Show all added figures..
         '''
-    tkinter.Label(label_box, text=text, width=80, height=40, anchor=tkinter.NW, justify=tkinter.LEFT).pack(side=tkinter.LEFT, fill=tkinter.Y, expand=tkinter.YES)
+    tkinter.Label(
+        label_box,
+        text=text,
+        width=80,
+        height=40,
+        anchor=tkinter.NW,
+        justify=tkinter.LEFT).pack(
+            side=tkinter.LEFT, fill=tkinter.Y, expand=tkinter.YES)
 
     label_box.mainloop()
