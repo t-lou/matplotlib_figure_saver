@@ -15,6 +15,10 @@ save_all_figures = FigureManager.FigureManager.save_all_figures
 
 
 def update_figures():
+    """Show all figures added to default FileManager.
+    
+    The default manager is FigureManager.g_figure_manager
+    """
     canvas.show_figure_from_manager(FigureManager.g_figure_manager)
 
 

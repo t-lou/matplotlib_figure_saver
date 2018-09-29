@@ -106,3 +106,23 @@ def start_text_box():
         text='Execute',
         command=(lambda: do(txt.get('1.0', tkinter.END).strip()))).pack(
             side=tkinter.BOTTOM, expand=tkinter.YES, fill=tkinter.BOTH)
+    
+def show_help_box():
+    label_box = tkinter.Tk()
+    
+    text = '''Helpful commands:
+        
+    add_all_figures():
+        Add all matplotlib.pyplot.figure-s.
+    add_figure(int/Figure):
+        Add one matplotlib.pyplot.figure with either object or index.
+    save_all_figures(str, [Figure]):
+        Save all figures to path (first string).
+        If the figures are not assigned, all figures in background will be saved.
+        Default filename is 'figures'.
+    update_figures():
+        Show all added figures..
+        '''
+    tkinter.Label(label_box, text=text, width=80, height=40, anchor=tkinter.NW, justify=tkinter.LEFT).pack(side=tkinter.LEFT, fill=tkinter.Y, expand=tkinter.YES)
+
+    label_box.mainloop()

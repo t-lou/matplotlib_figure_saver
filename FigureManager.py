@@ -8,8 +8,6 @@ import pickle
 import matplotlib.pyplot as pyplot
 import matplotlib._pylab_helpers as pylab_helpers
 
-import interaction
-
 
 class FigureManager(object):
     """The manager to store and matplotlib figures.

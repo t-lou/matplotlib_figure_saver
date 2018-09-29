@@ -30,7 +30,7 @@ def main():
     """The main entry of the program.
     """
     root = tkinter.Tk()
-    root.title('Hello World!')
+    root.title('Pytena')
 
     tkinter.Button(
         root,
@@ -52,6 +52,13 @@ def main():
         height=SIZE_BUTTON[1],
         width=SIZE_BUTTON[0],
         command=interaction.start_text_box).pack(side=tkinter.TOP)
+
+    tkinter.Button(
+        root,
+        text='Help',
+        height=SIZE_BUTTON[1],
+        width=SIZE_BUTTON[0],
+        command=interaction.show_help_box).pack(side=tkinter.TOP)
 
     root.mainloop()
 

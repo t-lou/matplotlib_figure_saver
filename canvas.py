@@ -80,8 +80,9 @@ def show_figure(data, title=None):
         title (str): The tile for the window.
     """
     gui = tkinter.Tk()
-    if title:
-        gui.title(title)
+    if title is None:
+        title = 'Pytena'
+    gui.title(title)
 
     if isinstance(data, (list, tuple)):
         notebook = ttk.Notebook(gui)
