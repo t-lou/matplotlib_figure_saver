@@ -122,7 +122,9 @@ def show_help_box():
         If the figures are not assigned, all figures in background will be saved.
         Default filename is 'figures'.
     update_figures():
-        Show all added figures..
+        Show all added figures.
+    remove_figure(int):
+        Remove a figure with index.
         '''
     tkinter.Label(
         label_box,

@@ -12,6 +12,7 @@ import testfield_source
 add_all_figures = FigureManager.g_figure_manager.add_all_figures
 add_figure = FigureManager.g_figure_manager.add_figure
 save_all_figures = FigureManager.FigureManager.save_all_figures
+remove_figure = FigureManager.g_figure_manager.remove_figure
 
 
 def update_figures():
