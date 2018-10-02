@@ -27,7 +27,6 @@ class FigureManager(object):
             manager.canvas.figure
             for manager in pylab_helpers.Gcf.get_all_fig_managers()
         ]
-        pyplot.close('all')
 
     def add_figure(self, target):
         """Add specified figure.
@@ -39,7 +38,6 @@ class FigureManager(object):
         """
         if isinstance(target, int):
             self._figures.append(pyplot.figure(target))
-            pyplot.close(target)
         elif isinstance(target, pyplot.Figure):
             self._figures.append(target)
         else:
