@@ -132,5 +132,3 @@ def show_help_box():
         anchor=tkinter.NW,
         justify=tkinter.LEFT).pack(
             side=tkinter.LEFT, fill=tkinter.Y, expand=tkinter.YES)
-
-    label_box.mainloop()

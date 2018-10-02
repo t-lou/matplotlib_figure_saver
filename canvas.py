@@ -98,5 +98,3 @@ def show_figure(data, title=None):
     else:
         add_panel(gui)
         add_canvas(data, gui)
-
-    gui.mainloop()
