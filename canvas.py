@@ -69,7 +69,7 @@ def show_figure_from_manager(figure_manager):
     Args:
         figure_manager (FigureManager): The FigureManager with figures.
     """
-    show_figure(figure_manager.get_figures())
+    show_figure(figure_manager.get_all_figures())
 
 
 def show_figure(data, title=None):
@@ -88,9 +88,9 @@ def show_figure(data, title=None):
         notebook = ttk.Notebook(gui)
         notebook.grid(row=1)
 
-        for index, figure in enumerate(data, 1):
+        for index, figure in enumerate(data):
             page = ttk.Frame(notebook)
-            notebook.add(page, text='figure{}'.format(index))
+            notebook.add(page, text='figure {}'.format(index))
             add_panel(page)
             add_canvas(figure, page)
 

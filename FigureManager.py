@@ -4,6 +4,7 @@ import os
 import sys
 import gzip
 import pickle
+import io
 
 import matplotlib.pyplot as pyplot
 import matplotlib._pylab_helpers as pylab_helpers
@@ -23,10 +24,8 @@ class FigureManager(object):
 
         This function will close all figures, otherwise the program may block.
         """
-        self._figures += [
-            manager.canvas.figure
-            for manager in pylab_helpers.Gcf.get_all_fig_managers()
-        ]
+        for manager in pylab_helpers.Gcf.get_all_fig_managers():
+            self.add_figure(manager.canvas.figure)
 
     def add_figure(self, target):
         """Add specified figure.
@@ -37,9 +36,12 @@ class FigureManager(object):
             target (int or matplotlib.pyplot.Figure): Figure index of figure.
         """
         if isinstance(target, int):
-            self._figures.append(pyplot.figure(target))
+            self.add_figure(pyplot.figure(target))
         elif isinstance(target, pyplot.Figure):
-            self._figures.append(target)
+            buffer = io.BytesIO()
+            pickle.dump(target, buffer)
+            buffer.seek(0)
+            self._figures.append(buffer)
         else:
             print('Parameter for add_figure must be int or pyplot.Figure.')
 
@@ -52,18 +54,8 @@ class FigureManager(object):
         data = FigureManager.load_pmg(filename)
         if isinstance(data, pyplot.Figure):
             data = [data]
-        self._figures += data
-
-    def get_figures(self):
-        """Return all figures.
-
-        Return:
-            The only figure or List of figures.
-        """
-        if len(self._figures) == 1:
-            return self._figures[0]
-        else:
-            return self._figures
+        for figure in data:
+            self.add_figure(figure)
 
     def get_figure(self, index):
         """Get the figure with index.
@@ -78,7 +70,14 @@ class FigureManager(object):
             'Asked figure {} but only {} images are available.'.format(
                     index,
                     len(self._figures))
-        return self._figures[index]
+        figure = pickle.load(self._figures[index])
+        self._figures[index].seek(0)
+        return figure
+
+    def get_all_figures(self):
+        """Return all figures of this manager.
+        """
+        return [self.get_figure(index) for index, _ in enumerate(self._figures)]
 
     def remove_figure(self, index):
         """Delete figure with index.
@@ -92,6 +91,11 @@ class FigureManager(object):
                     len(self._figures))
         del self._figures[index]
 
+    def remove_all_figures(self):
+        """Remove all figures.
+        """
+        self.clean_figures()
+
     def clean_figures(self):
         """Remove all figures.
         """
@@ -104,6 +108,7 @@ class FigureManager(object):
         Args:
             filename (str): The filename to save.
         """
+
         FigureManager.save_all_figures(self._figures, filename)
 
     @staticmethod
@@ -145,28 +150,28 @@ class FigureManager(object):
     @staticmethod
     def save_all_figures(filename='figures', figures=None):
         """Save all figures available to file.
+
         Args:
             filename (str): The filename for the ouput file.
+            figures ([Figure]): The figure objects to save.
         """
         if figures is None:
             fm = FigureManager()
             fm.add_all_figures()
-            figures = fm.get_figures()
+            figures = fm.get_all_figures()
 
         # https://stackoverflow.com/questions/3783217/get-the-list-of-figures-in-matplotlib
         with gzip.GzipFile(FigureManager.complete_extension(filename),
                            'wb') as outfile:
-            pickle.dump(
-                tuple(manager.canvas.figure
-                      for manager in pylab_helpers.Gcf.get_all_fig_managers()),
-                outfile,
-                protocol=2)
+            pickle.dump(figures, outfile, protocol=2)
 
     @staticmethod
     def save_figure(filename, figure_id):
         """Save specific figure to file.
+
         Args:
             filename (str): The filename for the ouput file.
+            figure_id (int): The index of figure to save.
         """
         with gzip.GzipFile(FigureManager.complete_extension(filename),
                            'wb') as outfile:
