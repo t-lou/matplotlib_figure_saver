@@ -125,6 +125,14 @@ def show_help_box():
         Show all added figures.
     remove_figure(int):
         Remove a figure with index.
+    get_figure(int, int):
+        Read the figure with first index (from 0, in GUI) to the second index
+        (from 1, in background).
+    get_all_figures(int):
+        Read all figures to background starting with the second index (from 1).
+    reset_figure(int, int):
+        Set the figure with first index (from 1, in background) to the second
+        index (from 0, in GUI).
         '''
     tkinter.Label(
         label_box,

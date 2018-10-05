@@ -27,13 +27,14 @@ class FigureManager(object):
         for manager in pylab_helpers.Gcf.get_all_fig_managers():
             self.add_figure(manager.canvas.figure)
 
-    def add_figure(self, target):
+    def add_figure(self, target, index=-1):
         """Add specified figure.
 
         If one index is given, the figure will be closed. Otherwise the program may block.
 
         Args:
-            target (int or matplotlib.pyplot.Figure): Figure index of figure.
+            target (int or matplotlib.pyplot.Figure): Figure or index of figure.
+            index (int): To which index to add this figure.
         """
         if isinstance(target, int):
             self.add_figure(pyplot.figure(target))
@@ -41,7 +42,29 @@ class FigureManager(object):
             buffer = io.BytesIO()
             pickle.dump(target, buffer)
             buffer.seek(0)
-            self._figures.append(buffer)
+            if index < 0:
+                self._figures.append(buffer)
+            else:
+                self._figures.insert(index, buffer)
+        else:
+            print('Parameter for add_figure must be int or pyplot.Figure.')
+
+    def reset_figure(self, target, target_index):
+        """Replace a figure with the given one.
+
+        If one index is given, the figure will be closed. Otherwise the program may block.
+
+        Args:
+            target (int or matplotlib.pyplot.Figure): Figure or index of figure.
+            target_index (int): To which index to add this figure.
+        """
+        if isinstance(target, int):
+            self.reset_figure(pyplot.figure(target), target_index)
+        elif isinstance(target, pyplot.Figure):
+            buffer = io.BytesIO()
+            pickle.dump(target, buffer)
+            buffer.seek(0)
+            self._figures[target_index] = buffer
         else:
             print('Parameter for add_figure must be int or pyplot.Figure.')
 
@@ -57,11 +80,12 @@ class FigureManager(object):
         for figure in data:
             self.add_figure(figure)
 
-    def get_figure(self, index):
+    def get_figure(self, index, start_index=0):
         """Get the figure with index.
 
         Args:
             index (int): The index of the wanted figure.
+            start_index (int): Starting index in matplotlib, default value is equivalent to index+1.
 
         Return:
             matplotlib.pyplot.Figure: The expected figure object.
@@ -70,13 +94,23 @@ class FigureManager(object):
             'Asked figure {} but only {} images are available.'.format(
                     index,
                     len(self._figures))
+        if start_index < 1:
+            start_index = index + 1
+        pyplot.figure(start_index)
         figure = pickle.load(self._figures[index])
         self._figures[index].seek(0)
         return figure
 
-    def get_all_figures(self):
+    def get_all_figures(self, start_index=1):
         """Return all figures of this manager.
+
+        Args:
+            start_index (int): Starting index in matplotlib.
+
+        Return:
+            list[matplotlib.pyplot.Figure]: All figures in this figure manager.
         """
+        pyplot.figure(start_index)
         return [self.get_figure(index) for index, _ in enumerate(self._figures)]
 
     def remove_figure(self, index):
@@ -108,7 +142,6 @@ class FigureManager(object):
         Args:
             filename (str): The filename to save.
         """
-
         FigureManager.save_all_figures(self._figures, filename)
 
     @staticmethod
