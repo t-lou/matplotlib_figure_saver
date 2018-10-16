@@ -3,7 +3,6 @@ from __future__ import print_function
 import numpy
 import matplotlib.pyplot as pyplot
 
-import img_reader
 from FigureManager import FigureManager
 
 # plot the two figures

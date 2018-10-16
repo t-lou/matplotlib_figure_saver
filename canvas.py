@@ -63,13 +63,14 @@ def show_figure_from_file(filename):
         show_figure(data, title=os.path.splitext(os.path.basename(filename))[0])
 
 
-def show_figure_from_manager(figure_manager):
+def show_figure_from_manager(figure_manager, title=None):
     """Display the figures from a FigureManager.
 
     Args:
         figure_manager (FigureManager): The FigureManager with figures.
+        title (str): The tile for the window.
     """
-    show_figure(figure_manager.get_all_figures())
+    show_figure(figure_manager.get_all_figures(), title=title)
 
 
 def show_figure(data, title=None):
@@ -81,7 +82,7 @@ def show_figure(data, title=None):
     """
     gui = tkinter.Tk()
     if title is None:
-        title = 'Pytena'
+        title = 'Pytena Canvas'
     gui.title(title)
 
     if isinstance(data, (list, tuple)):

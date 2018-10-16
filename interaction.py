@@ -53,6 +53,7 @@ def load_python_script():
 
     if filename:
         with open(filename, 'r') as infile:
+            os.chdir(os.path.dirname(filename))
             testfield_source.content = infile.read()
             reload(testfield)
 
@@ -83,18 +84,18 @@ def start_text_box():
         reload(testfield)
 
     text_box = tkinter.Tk()
-    text_box.title('Command')
+    text_box.title('Pytena Command')
 
     tkinter.Label(
         text_box, text='Add Python script here').pack(
-            side=tkinter.TOP, fill=tkinter.BOTH, expand=tkinter.YES)
+            side=tkinter.TOP)
 
-    txt = tkinter.Text(text_box, width=120, height=40)
+    txt = tkinter.Text(text_box)
     txt.focus()
-    txt.pack(side=tkinter.LEFT, fill=tkinter.X, expand=tkinter.YES)
+    txt.pack(side=tkinter.LEFT, fill=tkinter.BOTH, expand=tkinter.YES)
 
     scrollbar = tkinter.Scrollbar(text_box)
-    scrollbar.pack(side=tkinter.LEFT, fill=tkinter.Y, expand=tkinter.YES)
+    scrollbar.pack(side=tkinter.LEFT, fill=tkinter.Y)
     scrollbar.config(command=txt.yview)
     txt.config(yscrollcommand=scrollbar.set)
 
@@ -110,6 +111,7 @@ def start_text_box():
 
 def show_help_box():
     label_box = tkinter.Tk()
+    label_box.title('Pytena Help')
 
     text = '''Helpful commands:
         
@@ -125,6 +127,8 @@ def show_help_box():
         Show all added figures.
     remove_figure(int):
         Remove a figure with index.
+    remove_all_figures(int):
+        Remove all current figures.
     get_figure(int, int):
         Read the figure with first index (from 0, in GUI) to the second index
         (from 1, in background).
@@ -133,6 +137,8 @@ def show_help_box():
     reset_figure(int, int):
         Set the figure with first index (from 1, in background) to the second
         index (from 0, in GUI).
+    add_pmg(str):
+        Read the figures in one pmg file.
         '''
     tkinter.Label(
         label_box,

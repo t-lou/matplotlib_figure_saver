@@ -3,6 +3,7 @@
 from __future__ import print_function
 
 import sys
+import os
 
 if sys.version_info >= (3, 0):
     import tkinter
@@ -23,7 +24,9 @@ def find_show_image():
     filename = interaction.find_pmg()
     if filename:
         FigureManager.g_figure_manager.add_pmg(filename)
-        canvas.show_figure_from_manager(FigureManager.g_figure_manager)
+        canvas.show_figure_from_manager(
+            FigureManager.g_figure_manager,
+            title=os.path.basename(filename))
 
 
 def main():
