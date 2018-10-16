@@ -46,6 +46,31 @@ def find_file(filetypes):
     return filename
 
 
+def execute_code(code):
+    """Execute code from script of textbox.
+
+    Notification follows when the execution finishes.
+
+    Args:
+        code (str): The code to execute.
+    """
+    indicator = tkinter.Tk()
+    indicator.title('')
+
+    tkinter.Label(
+        indicator,
+        text='Execution finished',
+        width=40,
+        height=15).pack()
+
+    testfield_source.content = code
+    reload(testfield)
+
+    print('Execution finished')
+
+    indicator.after(1000, indicator.destroy)
+
+
 def load_python_script():
     """Find Python script and execute.
     """
@@ -54,8 +79,7 @@ def load_python_script():
     if filename:
         with open(filename, 'r') as infile:
             os.chdir(os.path.dirname(filename))
-            testfield_source.content = infile.read()
-            reload(testfield)
+            execute_code(infile.read())
 
 
 def find_pmg():
@@ -80,8 +104,7 @@ def start_text_box():
         """
         Alias for exec (which brings SyntaxError).
         """
-        testfield_source.content = string
-        reload(testfield)
+        execute_code(string)
 
     text_box = tkinter.Tk()
     text_box.title('Pytena Command')
