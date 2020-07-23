@@ -20,14 +20,14 @@ g_last_path = os.getenv('HOME')
 
 def find_file(filetypes):
     """Find file with given types and return the filename.
-    
+
     If one file is selected, the logged last path will be changed to the
     directory where the file lies.
-    
+
     Args:
         filetypes (list(list(str, str))): Texts and patterns to restrict the
             file types.
-        
+
     Return:
         str: The path for selected file.
     """
@@ -124,6 +124,8 @@ def start_text_box():
 
     txt.insert(tkinter.END, 'import matplotlib.pyplot as plt\n')
     txt.insert(tkinter.END, 'import numpy as np\n')
+    txt.insert(tkinter.END, 'from FigureManager import FigureManager\n')
+    txt.insert(tkinter.END, '\n')
 
     tkinter.Button(
         text_box,
@@ -137,7 +139,7 @@ def show_help_box():
     label_box.title('Pytena Help')
 
     text = '''Helpful commands:
-        
+
     add_all_figures():
         Add all matplotlib.pyplot.figure-s.
     add_figure(int/Figure):
