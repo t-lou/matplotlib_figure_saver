@@ -22,3 +22,25 @@ There is an entry to load the saved images in the main menu. As pmg contains the
 - **Image** display one pmg file containing one or more images
 - **Command** open one text editor for interactive execution
 - **Help** show the predefiend functions
+
+# Screenshots
+
+- main page
+
+![main](https://github.com/t-lou/pytena/blob/master/screenshot/main.png)
+
+- script
+
+![script](https://github.com/t-lou/pytena/blob/master/screenshot/script.png)
+
+- image
+
+![image](https://github.com/t-lou/pytena/blob/master/screenshot/load-image.png)
+
+- command
+
+![command](https://github.com/t-lou/pytena/blob/master/screenshot/command-save.png)
+
+- help
+
+![help](https://github.com/t-lou/pytena/blob/master/screenshot/help.png)
